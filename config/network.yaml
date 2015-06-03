@@ -1,0 +1,49 @@
+# Hostname
+hostname: foss-cloud-01
+# Default gateway for all networks
+gateway: 0.0.0.1
+
+interfaces:
+  - eth0
+# Bond together all interfaces specified above
+use_bonding: 0
+use_vlan: 0
+
+dns:
+  # Add custom resolvers to be added
+  # to /etc/resolv.conf
+  resolver:
+    - 8.8.8.8
+
+configuration:
+  pub:
+    vlanId: 140
+    ip: 0.0.0.0
+    netmask: 0
+    broadcast: 255.255.255.255
+    domain: foss-cloud.org
+  admin:
+    vlanId: 110
+    ip: 0.0.0.0
+    netmask: 0
+    broadcast: 255.255.255.255
+    domain: admin.foss-cloud.org
+  data:
+    vlanId: 120
+    ip: 127.0.0.1
+    netmask: 8
+    broadcast: 127.255.255.255
+    domain: data.foss-cloud.org
+  int:
+    vlanId: 130
+    ip: 127.0.0.1
+    netmask: 8
+    broadcast: 127.255.255.255
+    domain: int.foss-cloud.org
+  vmbr:
+    vlanId: 0
+    ip: 172.31.255.1
+    netmask: 24
+    broadcast: 172.255.255.255
+    domain: demo.foss-cloud.org
+

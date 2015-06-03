@@ -1,0 +1,13 @@
+projectname: FOSS-Cloud
+stage4_tarball: foss-cloud-stage4.tar.bz2
+requirements:
+  # Required Memory in GB
+  memory: 4
+  # Required disk space in GB
+  diskspace: 10
+osbdLvmVolumeGroup0: local0
+osbdLvmVolumeGroup1: local1
+osbdGlusterVolumeName: gluster-volume-01
+label_prefix: OBSD_
+network:
+  post_separator: ','

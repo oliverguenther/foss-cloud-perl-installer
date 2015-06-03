@@ -1,0 +1,87 @@
+# The root path under which the installer
+# runs.
+root: /mnt/osbd
+
+# The device to install to
+target_device: sdb
+
+# The data device
+# data_device: sdb
+
+# The node type to install
+nodetype: demo
+grub:
+  setup_partition: (hd0)
+  partition_magic_file: /osbd-boot-partition.txt
+
+# Volumes
+volumes:
+  boot:
+    device: /dev/sdb1
+    mountpoint: /boot
+    type: xfs
+    opts:
+      - noauto
+      - noatime
+    dump: 1
+    pass: 2
+  swap:
+    device: /dev/sdb2
+    type: swap
+    opts:
+      - sw
+    dump: 0
+    pass: 0
+  root:
+    device: /dev/sdb3
+    mountpoint:  /
+    type: xfs
+    opts:
+      - noatime
+    dump: 0
+    pass: 1
+  var:
+    mountpoint: /var
+    type: xfs
+    lvm: 1
+    lvm_size: 3G
+    opts:
+      - noatime
+      - nodev
+      - nosuid
+    dump: 0
+    pass: 2
+  tmp:
+    mountpoint: /tmp
+    type: xfs
+    lvm: 1
+    lvm_size: 1G
+    opts:
+      - noatime
+      - nodev
+      - nosuid
+      - noexec
+    dump: 0
+    pass: 2
+  home:
+    mountpoint: /home
+    type: xfs
+    lvm: 1
+    lvm_size: 500M
+    opts:
+      - noatime
+      - nodev
+    dump: 0
+    pass: 2
+  portage:
+    mountpoint: /usr/portage
+    type: xfs
+    lvm: 1
+    lvm_size: 1G
+    opts:
+      - noatime
+      - nodev
+      - nosuid
+      - noexec
+    dump: 0
+    pass: 2    

@@ -1,0 +1,65 @@
+#!/usr/bin/env perl
+
+use Modern::Perl;
+use utf8;
+binmode(STDOUT, ":utf8");
+
+use Getopt::Long;
+use Pod::Usage;
+
+use FindBin;
+use lib "$FindBin::Bin/../lib";
+
+use FOSSCloud::Installer;
+my %params;
+
+
+GetOptions (\%params,
+	'verbose', 'debug',
+	'help|h|?',
+	'--config|c=s',
+	'--skip-memory-check',
+	'--skip-cpu-check',
+  '--lvm-cleanup',
+	'--dry-run|n'
+	);
+
+# Show usage
+pod2usage(1) if $params{help};
+
+# config is mandatory
+unless ($params{config} && -d $params{config}) {
+	warn "Missing parameter 'config' or folder does not exist.";
+	die pod2usage(1);
+}
+
+# Inject home path
+$params{installer_root} = "$FindBin::Bin/../";
+
+# Load config and defaults
+my $inst = FOSSCloud::Installer->new(\%params);
+$inst->run;
+
+
+=pod
+
+=encoding utf8
+
+=head1 foss-cloud-installer
+
+=head1 SYNOPSIS
+
+foss-cloud-installer [options]
+
+  Options:
+
+    -c, --config <folder> Install non-interactively using the values
+    					  from the specifiedconfig folder.
+    --skip-cpu-check      Disables the CPU compatibility checks
+    --skip-memory-check   Disables the Memory compatibility checks
+    --lvm-cleanup         Deletes any existing Foss LVM upon installation
+    -v, --verbose         Be more verbose
+    -h, -?, --help        Show this message
+
+
+
