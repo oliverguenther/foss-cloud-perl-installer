@@ -20,7 +20,7 @@ GetOptions (\%params,
 	'--config|c=s',
 	'--skip-memory-check',
 	'--skip-cpu-check',
-  '--lvm-cleanup',
+	'--lvm-cleanup',
 	'--dry-run|n'
 	);
 

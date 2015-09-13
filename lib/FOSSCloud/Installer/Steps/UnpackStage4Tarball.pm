@@ -22,7 +22,12 @@ sub new {
     # info "This will take a while - please be patient"
 
     my $root = C('system.root');
-    my $tarfile = File::Spec->catfile($params->{installer_root}, C('defaults.stage4_tarball'));
+    my $tarfile = C('system.stage4_tarball');
+
+    # Expand from installer root unless file_name_is_absolutee
+    unless File::Spec->file_name_is_absolute($tarfile) {
+        $tarfile = File::Spec->catfile($params->{installer_root}, $tarfile);
+    }
 
     make_path($root);
 

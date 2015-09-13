@@ -1,5 +1,4 @@
 projectname: FOSS-Cloud
-stage4_tarball: foss-cloud-stage4.tar.bz2
 requirements:
   # Required Memory in GB
   memory: 4

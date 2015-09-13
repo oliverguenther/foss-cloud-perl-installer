@@ -2,6 +2,9 @@
 # runs.
 root: /mnt/osbd
 
+# Set the stage 4 tar to install from
+stage4_tarball: foss-cloud-stage4.tar.bz2
+
 # The device to install to
 target_device: sdb
 
@@ -84,4 +87,4 @@ volumes:
       - nosuid
       - noexec
     dump: 0
-    pass: 2    
+    pass: 2

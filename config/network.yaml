@@ -46,4 +46,3 @@ configuration:
     netmask: 24
     broadcast: 172.255.255.255
     domain: demo.foss-cloud.org
-
