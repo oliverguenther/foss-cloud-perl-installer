@@ -18,9 +18,9 @@ sub new {
 	my $self = {};
 	bless $self, $class;
 
-    my $fstab = File::Spec->catfile(C('system.root'), 'etc/fstab');
+    my $fstab = File::Spec->catfile(C('system.root'), '/etc/fstab');
 
-    make_path(dirname($fstab));
+    make_path(dirname($fstab), { mode => 0644 });
 
     open(my $file, '>', $fstab)
     or die "Cannot open fstab file '$fstab'";
@@ -31,11 +31,14 @@ sub new {
     my $fs_table = C('system.volumes');
     for my $label (keys %$fs_table) {
         my $fs = $fs_table->{$label};
+        my $fs_label = C('defaults.label_prefix') . "$label";
 
         next unless ($fs->{type} eq 'xfs');
 
+        say "Adding $fs_label (mountpoint $$fs{mountpoint}) to fstab";
+
         my $fs_opts = join(',', @{$fs->{opts}});
-        print $file "LABEL=$label\t$$fs{mountpoint}\txfs\t$fs_opts\t$$fs{dump} $$fs{pass}\n";
+        print $file "LABEL=$fs_label\t$$fs{mountpoint}\txfs\t$fs_opts\t$$fs{dump} $$fs{pass}\n";
     }
 
     print $file "/dev/cdrom\t/mnt/cdrom\tauto\tnoauto,ro\t0 0\n";

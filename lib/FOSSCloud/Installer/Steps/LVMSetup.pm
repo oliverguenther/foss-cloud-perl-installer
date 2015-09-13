@@ -3,6 +3,7 @@ package FOSSCloud::Installer::Steps::LVMSetup;
 use FOSSCloud::Installer::Config;
 use FOSSCloud::Installer::Common::LVM;
 use Modern::Perl;
+use File::Spec;
 use IPC::Run qw(run);
 use File::Path qw(make_path);
 use feature 'switch';
@@ -171,7 +172,8 @@ sub setup_filesystem {
     my $volume_group = '/dev/' . C('defaults.osbdLvmVolumeGroup0');
 
     my $fs_table = C('system.volumes');
-    for my $name (keys %$fs_table) {
+    my @ordered_mounts = sort { $fs_table->{$a}->{order} <=> $fs_table->{$b}->{order} } keys %$fs_table;
+    for my $name (@ordered_mounts) {
         my $fs = $fs_table->{$name};
         my $label = C('defaults.label_prefix') . $name;
 
@@ -233,10 +235,14 @@ Parameters:
 sub mount {
     my ($self, $label, $mount) = @_;
 
-    make_path $mount unless -d $mount;
+    # Prefix mount with system root
+    my $path = File::Spec->catdir(C('system.root'), $mount);
 
-    die "Unable to mount device with label '$label' to $mount"
-    if system("mount -L $label $mount") != 0;
+    say "Mounting $label to $path";
+    make_path $path unless -d $path;
+
+    die "Unable to mount device with label '$label' to $path"
+    if system("mount -L $label $path") != 0;
 
     # debug "Device with label '${label}' successfully mounted to ${mountPoint}"
 }
